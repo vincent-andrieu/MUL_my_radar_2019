@@ -11,3 +11,4 @@ test
 *.sublime-*
 unit_tests
 my_radar
+bootstrap.c
