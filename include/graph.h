@@ -23,8 +23,8 @@ typedef struct framebuffer_s {
 typedef struct assets_s {
     sfRenderWindow* window;
     framebuffer_t *framebuffer;
-    sfTexture* texture;
-    sfSprite* sprite;
+    sfTexture *texture;
+    sfSprite *sprite;
 } assets_t;
 
 typedef sfVector2f vec;

@@ -39,7 +39,7 @@ static void show_window(assets_t *assets)
     sfEvent event;
 
     srand(time(NULL));
-    printf("%d\n", bootstrap(assets));
+    my_radar(assets);
     while (sfRenderWindow_pollEvent(assets->window, &event))
         if (event.type == sfEvtClosed
         || event.key.code == sfKeyEscape)

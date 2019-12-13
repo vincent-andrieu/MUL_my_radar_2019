@@ -6,7 +6,7 @@
 ##
 
 SRC	=	src/main.c	\
-		src/bootstrap.c
+		src/my_radar.c
 
 OBJ	=	$(SRC:.c=.o)
 

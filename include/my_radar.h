@@ -12,6 +12,13 @@
 #ifndef MY_RADAR_H_
 #define MY_RADAR_H_
 
-int bootstrap(assets_t *assets);
+typedef struct entity_s
+{
+    sfTexture *texture;
+    sfSprite *sprite;
+    sfVector2f position;
+} entity_t;
+
+int my_radar(assets_t *assets);
 
 #endif
