@@ -26,16 +26,16 @@ entity_t *create_sprite(char *filepath, float x, float y)
 
 static void draw_map(assets_t *assets)
 {
-    entity_t *map = create_sprite("resource/map.png", 0, 0);
+    entity_t *map = create_sprite("resource/background.png", 0, 0);
 
     sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
-    refresh_screen(assets);
 }
 
 int my_radar(assets_t *assets)
 {
     draw_map(assets);
-    
+
+    refresh_screen(assets);    
     return EXIT_SUCCESS;
 }
 
