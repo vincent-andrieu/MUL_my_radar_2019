@@ -50,5 +50,6 @@ char *my_strndup(char const *src, int n);
 int my_show_word_array(char * const *tab);
 char *my_convert_base(char const *nbr, int base1, int base2);
 char *my_str_malloc(char *str, int const size, char const empty);
+char *get_next_line(int fd);
 
 #endif
