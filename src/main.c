@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <SFML/Graphics.h>
 #include <fcntl.h>
 #include <time.h>
@@ -13,7 +14,7 @@
 #include "graph.h"
 #include "my_radar.h"
 
-int does_kill_prog(sfRenderWindow *window)
+bool does_kill_prog(sfRenderWindow *window)
 {
     sfEvent event;
 
@@ -21,62 +22,64 @@ int does_kill_prog(sfRenderWindow *window)
         if (event.type == sfEvtClosed || (event.type == sfEvtKeyReleased
         && event.key.code == sfKeyEscape)) {
             sfRenderWindow_close(window);
-            return 0;
+            return true;
         }
+        if (event.key.code == sfKeyL)
+            toggle_hitboxes();
+        if (event.key.code == sfKeyS)
+            toggle_sprites();
     }
-    return 1;
+    return false;
 }
 
-static void clear_screen(assets_t *assets)
-{
-    for (unsigned int i = 0;
-    i < assets->framebuffer->width * assets->framebuffer->height * 4; i++)
-        assets->framebuffer->pixels[i] = 0;
-}
-
-static void show_window(assets_t *assets)
+static int show_window(assets_t *assets, char *map_path)
 {
     sfEvent event;
+    int exit_value;
 
     srand(time(NULL));
-    my_radar(assets);
+    exit_value = my_radar(assets, map_path);
     while (sfRenderWindow_pollEvent(assets->window, &event))
         if (event.type == sfEvtClosed
         || event.key.code == sfKeyEscape)
             sfRenderWindow_close(assets->window);
-    clear_screen(assets);
     sfTexture_updateFromPixels(assets->texture, assets->framebuffer->pixels,
                                 WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0);
     sfRenderWindow_clear(assets->window, sfBlack);
     sfRenderWindow_drawSprite(assets->window, assets->sprite, NULL);
     sfRenderWindow_display(assets->window);
+    return exit_value;
 }
 
-int prepare_window(void)
+static int prepare_window(char *map_path, sfVideoMode mde, assets_t *assets)
 {
-    sfVideoMode mode = {WINDOW_WIDTH, WINDOW_HEIGHT, 32};
-    assets_t *assets = malloc(sizeof(assets_t));
-    assets->window = sfRenderWindow_create(mode, "MyScreensaver",
-                                            sfResize | sfClose, NULL);
+    int exit_value = -1;
+
+    if (assets == NULL)
+        return EXIT_ERROR;
+    assets->window = sfRenderWindow_create(mde, NAME, sfResize | sfClose, NULL);
     assets->texture = sfTexture_create(WINDOW_WIDTH, WINDOW_HEIGHT);
     assets->sprite = sfSprite_create();
     assets->framebuffer = framebuffer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
-
     if (assets->window == NULL || assets->texture == NULL)
-        return EXIT_FAILURE;
+        return EXIT_ERROR;
     sfSprite_setTexture(assets->sprite, assets->texture, sfTrue);
     sfRenderWindow_setFramerateLimit(assets->window, 30);
-    while (sfRenderWindow_isOpen(assets->window))
-        show_window(assets);
+    exit_value = show_window(assets, map_path);
     framebuffer_destroy(assets->framebuffer);
     sfSprite_destroy(assets->sprite);
     sfTexture_destroy(assets->texture);
     sfRenderWindow_destroy(assets->window);
     free(assets);
-    return EXIT_SUCCESS;
+    return exit_value;
 }
 
 int main(int argc, char **argv)
 {
-    return prepare_window();
+    if (argc != 2) {
+        my_put_error_str(MSG_INVALID_ARG_NBR);
+        return EXIT_INVALID_ARG_NBR;
+    }
+    return prepare_window(argv[1], (sfVideoMode)
+                {WINDOW_WIDTH, WINDOW_HEIGHT, 32}, malloc(sizeof(assets_t)));
 }

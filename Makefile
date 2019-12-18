@@ -6,7 +6,10 @@
 ##
 
 SRC	=	src/main.c	\
-		src/my_radar.c
+		src/my_radar.c	\
+		src/draw.c	\
+		src/map.c	\
+		src/clock.c
 
 OBJ	=	$(SRC:.c=.o)
 

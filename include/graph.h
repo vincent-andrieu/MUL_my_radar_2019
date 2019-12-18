@@ -10,6 +10,7 @@
 #ifndef GRAPH_H_
 #define GRAPH_H_
 
+#define NAME "MyRadar"
 #define WINDOW_HEIGHT 1080
 #define WINDOW_WIDTH 1920
 #define BACKGROUND_COLOR sfBlack
@@ -21,7 +22,7 @@ typedef struct framebuffer_s {
 } framebuffer_t;
 
 typedef struct assets_s {
-    sfRenderWindow* window;
+    sfRenderWindow *window;
     framebuffer_t *framebuffer;
     sfTexture *texture;
     sfSprite *sprite;

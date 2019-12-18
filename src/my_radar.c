@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** my_radar
 ** File description:
-** collision btw planes
+** my_radar
 */
 
 #include <stdlib.h>
@@ -12,31 +12,42 @@
 #include "graph.h"
 #include "my_radar.h"
 
-entity_t *create_sprite(char *filepath, float x, float y)
+sprite_t *create_sprite(char *filepath, float x, float y)
 {
-    entity_t *entity = malloc(sizeof(entity_t));
+    sprite_t *sprite = malloc(sizeof(sprite_t));
 
-    entity->position = (sfVector2f) {x, y};
-    entity->texture = sfTexture_createFromFile(filepath, NULL);
-    entity->sprite = sfSprite_create();
-    sfSprite_setTexture(entity->sprite, entity->texture, sfTrue);
-    sfSprite_setPosition(entity->sprite, entity->position);
-    return entity;
+    if (sprite == NULL)
+        return NULL;
+    sprite->position = (sfVector2f) {x, y};
+    sprite->texture = sfTexture_createFromFile(filepath, NULL);
+    sprite->sprite = sfSprite_create();
+    sfSprite_setTexture(sprite->sprite, sprite->texture, sfTrue);
+    sfSprite_setPosition(sprite->sprite, sprite->position);
+    return sprite;
 }
 
-static void draw_map(assets_t *assets)
+int my_radar(assets_t *assets, char *map_path)
 {
-    entity_t *map = create_sprite("resource/background.png", 0, 0);
+    entities_t *entities = read_map(map_path);
+    sprite_t *map = create_sprite(BACKGROUND_PATH, 0, 0);
+    sfClock *clock = sfClock_create();
 
-    sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
-}
-
-int my_radar(assets_t *assets)
-{
-    draw_map(assets);
-
-    refresh_screen(assets);    
+    if (entities == NULL || map == NULL)
+        return EXIT_ERROR;
+    while (!does_kill_prog(assets->window)) {
+        sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
+        draw_towers(assets->window, entities->towers);
+        draw_planes(assets->window, entities->planes);
+        draw_clock(assets->window, clock);
+        refresh_screen(assets);
+    }
+    sfClock_destroy(clock);
     return EXIT_SUCCESS;
 }
 
-//sfIntRect_contains
+/*sfIntRect_contains
+
+start
+destroy
+restart
+*/

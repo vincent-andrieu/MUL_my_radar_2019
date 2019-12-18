@@ -10,6 +10,8 @@
 #ifndef MY_H
 #define MY_H
 
+#define READ_SIZE 11
+
 int my_putchar(char c);
 int my_put_error_str(char const *str);
 bool my_isneg(int nb);
