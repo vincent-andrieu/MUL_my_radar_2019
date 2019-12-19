@@ -26,28 +26,32 @@ sprite_t *create_sprite(char *filepath, float x, float y)
     return sprite;
 }
 
+static void destroy_all(sfClock *clock, sfText *txt, sfFont *font)
+{
+    sfFont_destroy(font);
+    sfText_destroy(txt);
+    sfClock_destroy(clock);
+}
+
 int my_radar(assets_t *assets, char *map_path)
 {
     entities_t *entities = read_map(map_path);
     sprite_t *map = create_sprite(BACKGROUND_PATH, 0, 0);
     sfClock *clock = sfClock_create();
+    sfText *txt = sfText_create();
+    sfFont *font = sfFont_createFromFile(FONT_PATH);
 
     if (entities == NULL || map == NULL)
         return EXIT_ERROR;
+    initialize_font(txt, font);
     while (!does_kill_prog(assets->window)) {
+        //move_planes(entities->planes);
         sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
         draw_towers(assets->window, entities->towers);
         draw_planes(assets->window, entities->planes);
-        draw_clock(assets->window, clock);
+        draw_clock(assets->window, clock, txt);
         refresh_screen(assets);
     }
-    sfClock_destroy(clock);
+    destroy_all(clock, txt, font);
     return EXIT_SUCCESS;
 }
-
-/*sfIntRect_contains
-
-start
-destroy
-restart
-*/

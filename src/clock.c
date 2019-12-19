@@ -24,20 +24,28 @@ static char *my_float_get_str(float nbr)
     str[i + 1] = '\0';
     temp = my_nbr_get_str((int) (fnbr * 100));
     my_strcat(str, temp);
+    if (fnbr * 100 < 10) {
+        for (; str[i] != '\0'; i++);
+        str[i] = '0';
+        str[i + 1] = '\0';
+    }
     free(temp);
     return str;
 }
 
-void draw_clock(sfRenderWindow *window, sfClock *clock)
+void draw_clock(sfRenderWindow *window, sfClock *clock, sfText *txt)
 {
     char *clock_str = my_float_get_str(sfTime_asSeconds(
                 sfClock_getElapsedTime(clock)));
-    sfText *txt = sfText_create();
 
     sfText_setString(txt, clock_str);
     free(clock_str);
-    sfText_setPosition(txt, (sfVector2f) CLOCK_POS);
-    sfText_setColor(txt, sfRed);
     sfRenderWindow_drawText(window, txt, NULL);
-    sfText_destroy(txt);
+}
+
+void initialize_font(sfText *txt, sfFont *font)
+{
+    sfText_setFont(txt, font);
+    sfText_setPosition(txt, (sfVector2f) CLOCK_POS);
+    sfText_setColor(txt, sfBlack);
 }

@@ -23,7 +23,8 @@
 #define PLANE_HITBOX_PATH "resource/square.png"
 #define CHAR_TOWER 'T'
 #define CHAR_PLANE 'P'
-#define CLOCK_POS {1800, 20}
+#define CLOCK_POS {1830, 15}
+#define FONT_PATH "resource/LemonMilk.otf"
 
 typedef struct sprite_s
 {
@@ -68,6 +69,7 @@ void toggle_sprites(void);
 entities_t *read_map(char *filepath);
 void draw_towers(sfRenderWindow *window, tower_t *towers);
 void draw_planes(sfRenderWindow *window, plane_t *planes);
-void draw_clock(sfRenderWindow *window, sfClock *clock);
+void draw_clock(sfRenderWindow *window, sfClock *clock, sfText *txt);
+void initialize_font(sfText *txt, sfFont *font);
 
 #endif
