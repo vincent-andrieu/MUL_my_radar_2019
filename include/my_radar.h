@@ -23,7 +23,7 @@
 #define PLANE_HITBOX_PATH "resource/square.png"
 #define CHAR_TOWER 'T'
 #define CHAR_PLANE 'P'
-#define CLOCK_POS {1830, 15}
+#define CLOCK_POS {WINDOW_WIDTH - 90, 15}
 #define FONT_PATH "resource/LemonMilk.otf"
 
 typedef struct sprite_s
@@ -63,6 +63,7 @@ typedef struct entities_s
 
 bool does_kill_prog(sfRenderWindow *window);
 int my_radar(assets_t *assets, char *map_path);
+int usage(int exit_value, char *binary_name);
 sprite_t *create_sprite(char *filepath, float x, float y);
 void toggle_hitboxes(void);
 void toggle_sprites(void);

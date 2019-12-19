@@ -80,6 +80,8 @@ int main(int argc, char **argv)
         my_put_error_str(MSG_INVALID_ARG_NBR);
         return EXIT_INVALID_ARG_NBR;
     }
+    if (!my_strcmp(argv[1], "-h"))
+        return usage(EXIT_SUCCESS, argv[0]);
     return prepare_window(argv[1], (sfVideoMode)
                 {WINDOW_WIDTH, WINDOW_HEIGHT, 32}, malloc(sizeof(assets_t)));
 }
