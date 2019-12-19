@@ -45,7 +45,6 @@ int my_radar(assets_t *assets, char *map_path)
         return EXIT_ERROR;
     initialize_font(txt, font);
     while (!does_kill_prog(assets->window)) {
-        //move_planes(entities->planes);
         sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
         draw_towers(assets->window, entities->towers);
         draw_planes(assets->window, entities->planes);
