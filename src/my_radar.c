@@ -26,31 +26,43 @@ sprite_t *create_sprite(char *filepath, float x, float y)
     return sprite;
 }
 
-static void destroy_all(sfClock *clock, sfText *txt, sfFont *font)
+static int game(assets_t *assets, entities_t *entities,
+                sfClock *clock, sfText *txt)
 {
-    sfFont_destroy(font);
-    sfText_destroy(txt);
-    sfClock_destroy(clock);
+    sprite_t *map = create_sprite(BACKGROUND_PATH, 0, 0);
+    int seconds;
+
+    if (map == NULL)
+        return EXIT_ERROR;
+    while (!does_kill_prog(assets)) {
+        seconds = sfTime_asSeconds(sfClock_getElapsedTime(clock));
+        if (check_planes_delay(entities->planes, seconds))
+            break;
+        move_planes(entities->planes, (int) seconds);
+        sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
+        draw_towers(assets, entities->towers);
+        draw_planes(assets->window, entities->planes);
+        draw_clock(assets->window, clock, txt);
+        refresh_screen(assets);
+    }
+    sfSprite_destroy(map->sprite);
+    return EXIT_SUCCESS;
 }
 
 int my_radar(assets_t *assets, char *map_path)
 {
     entities_t *entities = read_map(map_path);
-    sprite_t *map = create_sprite(BACKGROUND_PATH, 0, 0);
     sfClock *clock = sfClock_create();
     sfText *txt = sfText_create();
     sfFont *font = sfFont_createFromFile(FONT_PATH);
+    int exit_value = EXIT_SUCCESS;
 
-    if (entities == NULL || map == NULL)
+    if (entities == NULL)
         return EXIT_ERROR;
     initialize_font(txt, font);
-    while (!does_kill_prog(assets->window)) {
-        sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
-        draw_towers(assets->window, entities->towers);
-        draw_planes(assets->window, entities->planes);
-        draw_clock(assets->window, clock, txt);
-        refresh_screen(assets);
-    }
-    destroy_all(clock, txt, font);
-    return EXIT_SUCCESS;
+    exit_value = game(assets, entities, clock, txt);
+    destroy_all(entities, clock, txt, font);
+    return exit_value;
 }
+
+//sfIntRect_contains

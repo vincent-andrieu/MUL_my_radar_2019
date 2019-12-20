@@ -31,8 +31,10 @@ static tower_t *add_tower(char *str, tower_t *towers)
         return NULL;
     new->x = get_next_nbr(&str);
     new->y = get_next_nbr(&str);
+    new->radius = get_next_nbr(&str);
     new->sprite = NULL;//create_sprite(TOWER_PATH, new->x, new->y);
-    new->hitbox = create_sprite(TOWER_HITBOX_PATH, new->x, new->y);
+    /*if (new->sprite == NULL || )
+        return NULL;*/
     new->next = towers;
     return new;
 }
@@ -51,7 +53,12 @@ static plane_t *add_plane(char *str, plane_t *planes)
     new->dest_y = get_next_nbr(&str);
     new->sprite = NULL;//create_sprite(PLANE_PATH, new->x, new->y);
     new->hitbox = create_sprite(PLANE_HITBOX_PATH, new->x, new->y);
+    if (/*new->sprite == NULL || */new->hitbox == NULL)
+        return NULL;
     new->next = planes;
+    new->prev = NULL;
+    if (new->next != NULL)
+        new->next->prev = new;
     return new;
 }
 

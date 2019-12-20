@@ -14,19 +14,19 @@
 #include "graph.h"
 #include "my_radar.h"
 
-bool does_kill_prog(sfRenderWindow *window)
+bool does_kill_prog(assets_t *assets)
 {
     sfEvent event;
 
-    while (sfRenderWindow_pollEvent(window, &event)) {
+    while (sfRenderWindow_pollEvent(assets->window, &event)) {
         if (event.type == sfEvtClosed || (event.type == sfEvtKeyReleased
         && event.key.code == sfKeyEscape)) {
-            sfRenderWindow_close(window);
+            sfRenderWindow_close(assets->window);
             return true;
         }
-        if (event.key.code == sfKeyL)
-            toggle_hitboxes();
-        if (event.key.code == sfKeyS)
+        if (event.type == sfEvtKeyReleased && event.key.code == sfKeyL)
+            toggle_hitboxes(assets);
+        if (event.type == sfEvtKeyReleased && event.key.code == sfKeyS)
             toggle_sprites();
     }
     return false;

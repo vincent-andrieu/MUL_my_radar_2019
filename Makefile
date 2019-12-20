@@ -7,10 +7,12 @@
 
 SRC	=	src/main.c	\
 		src/my_radar.c	\
-		src/draw.c	\
-		src/map.c	\
+		src/usage.c	\
 		src/clock.c	\
-		src/usage.c
+		src/map.c	\
+		src/draw.c	\
+		src/planes.c	\
+		src/destroy.c
 
 OBJ	=	$(SRC:.c=.o)
 
