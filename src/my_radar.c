@@ -34,11 +34,14 @@ static int game(assets_t *assets, entities_t *entities,
 
     if (map == NULL)
         return EXIT_ERROR;
-    while (!does_kill_prog(assets)) {
+    while (!does_kill_prog(assets, entities)) {
         seconds = sfTime_asSeconds(sfClock_getElapsedTime(clock));
-        if (check_planes_delay(entities->planes, seconds))
-            break;
+        entities->planes = check_planes_delay(entities->planes,
+                                            entities->planes, seconds);
         move_planes(entities->planes, (int) seconds);
+        entities->planes = check_collisions(entities->planes, entities->planes, entities->towers);
+        if (entities->planes ==  NULL)
+            break;
         sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
         draw_towers(assets, entities->towers);
         draw_planes(assets->window, entities->planes);
@@ -64,5 +67,3 @@ int my_radar(assets_t *assets, char *map_path)
     destroy_all(entities, clock, txt, font);
     return exit_value;
 }
-
-//sfIntRect_contains

@@ -10,40 +10,39 @@
 #include <math.h>
 #include "my_radar.h"
 
-static bool hitboxes = true;
-static bool sprites = false;
-
-static void clear_screen(assets_t *assets)
+void toggle_hitboxes(plane_t *planes)
 {
-    for (unsigned int i = 0;
-    i < assets->framebuffer->width * assets->framebuffer->height * 4; i++)
-        assets->framebuffer->pixels[i] = 0;
+    sfColor color;
+
+    if (planes == NULL)
+        return;
+    color = sfRectangleShape_getOutlineColor(planes->hitbox);
+    if (color.a == sfBlack.a)
+        sfRectangleShape_setOutlineColor(planes->hitbox, sfTransparent);
+    else
+        sfRectangleShape_setOutlineColor(planes->hitbox, sfBlack);
+    toggle_hitboxes(planes->next);
 }
 
-void toggle_hitboxes(assets_t *assets)
+void toggle_sprites(plane_t *planes, tower_t *towers)
 {
-    hitboxes = !hitboxes;
-    clear_screen(assets);
-}
-
-void toggle_sprites(void)
-{
-    sprites = !sprites;
+    if (planes == NULL && towers == NULL)
+        return;
+    if (planes != NULL)
+        planes->sprite_toggle = !planes->sprite_toggle;
+    if (towers != NULL)
+        towers->sprite_toggle = !towers->sprite_toggle;
+    toggle_sprites(planes == NULL ? NULL : planes->next,
+                    towers == NULL ? NULL : towers->next);
 }
 
 void draw_towers(assets_t *assets, tower_t *towers)
 {
     if (towers == NULL)
         return;
-    if (sprites)
+    if (towers->sprite_toggle)
         sfRenderWindow_drawSprite(assets->window, towers->sprite->sprite, NULL);
-    if (hitboxes)
-        for (float angle = 0; angle < 360; angle += 0.1) {
-            my_draw_rect(assets->framebuffer, (sfVector2f) {
-            towers->radius * cos(angle * M_PI / 180) + towers->x,
-            towers->radius * sin(angle * M_PI / 180) + towers->y
-            }, (sfVector2f) {2, 2}, sfBlack);
-        }
+    sfRenderWindow_drawCircleShape(assets->window, towers->circle, NULL);
     draw_towers(assets, towers->next);
 }
 
@@ -51,9 +50,8 @@ void draw_planes(sfRenderWindow *window, plane_t *planes)
 {
     if (planes == NULL)
         return;
-    if (sprites)
+    if (planes->sprite_toggle)
         sfRenderWindow_drawSprite(window, planes->sprite->sprite, NULL);
-    if (hitboxes)
-        sfRenderWindow_drawSprite(window, planes->hitbox->sprite, NULL);
+    sfRenderWindow_drawRectangleShape(window, planes->hitbox, NULL);
     draw_planes(window, planes->next);
 }

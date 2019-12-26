@@ -14,7 +14,7 @@
 #include "graph.h"
 #include "my_radar.h"
 
-bool does_kill_prog(assets_t *assets)
+bool does_kill_prog(assets_t *assets, entities_t *entities)
 {
     sfEvent event;
 
@@ -25,9 +25,9 @@ bool does_kill_prog(assets_t *assets)
             return true;
         }
         if (event.type == sfEvtKeyReleased && event.key.code == sfKeyL)
-            toggle_hitboxes(assets);
+            toggle_hitboxes(entities->planes);
         if (event.type == sfEvtKeyReleased && event.key.code == sfKeyS)
-            toggle_sprites();
+            toggle_sprites(entities->planes, entities->towers);
     }
     return false;
 }

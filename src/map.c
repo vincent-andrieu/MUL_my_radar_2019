@@ -6,12 +6,13 @@
 */
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "my.h"
 #include "my_radar.h"
 
-static float get_next_nbr(char **str)
+float get_next_nbr(char **str)
 {
     float result;
     int i = 0;
@@ -32,9 +33,16 @@ static tower_t *add_tower(char *str, tower_t *towers)
     new->x = get_next_nbr(&str);
     new->y = get_next_nbr(&str);
     new->radius = get_next_nbr(&str);
-    new->sprite = NULL;//create_sprite(TOWER_PATH, new->x, new->y);
-    /*if (new->sprite == NULL || )
+    new->circle = sfCircleShape_create();
+    new->sprite = NULL;/*create_sprite(TOWER_PATH, new->x, new->y);
+    if (new->sprite == NULL)
         return NULL;*/
+    new->sprite_toggle = false;
+    sfCircleShape_setPosition(new->circle, (sfVector2f) {new->x, new->y});
+    sfCircleShape_setOutlineColor(new->circle, sfBlack);
+    sfCircleShape_setFillColor(new->circle, sfTransparent);
+    sfCircleShape_setOutlineThickness(new->circle, TOWER_OUTLINE_SIZE);
+    sfCircleShape_setRadius(new->circle, new->radius);
     new->next = towers;
     return new;
 }
@@ -45,16 +53,9 @@ static plane_t *add_plane(char *str, plane_t *planes)
 
     if (new == NULL)
         return NULL;
-    new->speed = get_next_nbr(&str);
-    new->delay = get_next_nbr(&str);
-    new->x = get_next_nbr(&str);
-    new->y = get_next_nbr(&str);
-    new->dest_x = get_next_nbr(&str);
-    new->dest_y = get_next_nbr(&str);
-    new->sprite = NULL;//create_sprite(PLANE_PATH, new->x, new->y);
-    new->hitbox = create_sprite(PLANE_HITBOX_PATH, new->x, new->y);
-    if (/*new->sprite == NULL || */new->hitbox == NULL)
+    if (fill_plane_data(new, str))
         return NULL;
+    new->sprite_toggle = false;
     new->next = planes;
     new->prev = NULL;
     if (new->next != NULL)
