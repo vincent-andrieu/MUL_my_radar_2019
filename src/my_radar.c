@@ -39,7 +39,8 @@ static int game(assets_t *assets, entities_t *entities,
         entities->planes = check_planes_delay(entities->planes,
                                             entities->planes, seconds);
         move_planes(entities->planes, (int) seconds);
-        entities->planes = check_collisions(entities->planes, entities->planes, entities->towers);
+        entities->planes = check_collisions(entities->planes, entities->planes,
+                                            entities->towers);
         if (entities->planes ==  NULL)
             break;
         sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
