@@ -26,6 +26,14 @@ sprite_t *create_sprite(char *filepath, float x, float y)
     return sprite;
 }
 
+static void draw_all(assets_t *assets, entities_t *entities,
+                    sfClock *clock, sfText *txt)
+{
+    draw_towers(assets, entities->towers);
+    draw_planes(assets->window, entities->planes);
+    draw_clock(assets->window, clock, txt);
+}
+
 static int game(assets_t *assets, entities_t *entities,
                 sfClock *clock, sfText *txt)
 {
@@ -44,9 +52,7 @@ static int game(assets_t *assets, entities_t *entities,
         if (entities->planes ==  NULL)
             break;
         sfRenderWindow_drawSprite(assets->window, map->sprite, NULL);
-        draw_towers(assets, entities->towers);
-        draw_planes(assets->window, entities->planes);
-        draw_clock(assets->window, clock, txt);
+        draw_all(assets, entities, clock, txt);
         refresh_screen(assets);
     }
     sfSprite_destroy(map->sprite);
