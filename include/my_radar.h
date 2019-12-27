@@ -87,5 +87,7 @@ float get_next_nbr(char **str);
 bool fill_plane_data(plane_t *planes, char *str);
 plane_t *destroy_plane(plane_t *origin, plane_t *plane, bool is_take_off);
 plane_t *check_collisions(plane_t *planes_origin, plane_t *planes, tower_t *towers);
+void set_plane_rotation(plane_t *plane);
+void take_off(plane_t *plane);
 
 #endif

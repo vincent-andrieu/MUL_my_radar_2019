@@ -13,7 +13,8 @@ SRC	=	src/main.c	\
 		src/draw.c	\
 		src/planes.c	\
 		src/destroy.c	\
-		src/collisions.c
+		src/collisions.c	\
+		src/rotations.c
 
 OBJ	=	$(SRC:.c=.o)
 

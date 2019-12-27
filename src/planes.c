@@ -11,18 +11,6 @@
 #include "my_radar.h"
 #include "my.h"
 
-static void take_off(plane_t *plane)
-{
-    sfVector2f scale;
-
-    do {
-        scale = sfSprite_getScale(plane->sprite->sprite);
-        scale.x--;
-        scale.y--;
-        sfSprite_setScale(plane->sprite->sprite, scale);
-    } while (scale.x > 1 && scale.y > 1);
-}
-
 plane_t *destroy_plane(plane_t *origin, plane_t *plane, bool is_take_off)
 {
     if (plane->prev != NULL)
@@ -58,6 +46,7 @@ void move_planes(plane_t *planes, int seconds)
                         //planes->y});
     sfRectangleShape_setPosition(planes->hitbox,
                                 (sfVector2f) {planes->x, planes->y});
+    set_plane_rotation(planes);
     move_planes(planes->next, seconds);
     last_seconds = seconds;
 }
