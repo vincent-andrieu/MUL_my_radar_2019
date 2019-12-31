@@ -21,7 +21,7 @@ plane_t *destroy_plane(plane_t *origin, plane_t *plane, bool is_take_off)
         origin = plane->next;
     if (is_take_off)
         take_off(plane);
-    //sfSprite_destroy(plane->sprite->sprite);
+    sfSprite_destroy(plane->sprite->sprite);
     sfRectangleShape_destroy(plane->hitbox);
     sfCircleShape_destroy(plane->circle);
     free(plane);
@@ -42,8 +42,8 @@ void move_planes(plane_t *planes, int seconds)
     cosinus = diff_x != 0 ? cos(atan(diff_y / diff_x)) : 0;
     planes->x += planes->speed * cosinus * (diff_x < 0 ? -1 : 1);
     planes->y += planes->speed * (1 - cosinus) * (diff_y < 0 ? -1 : 1);
-    //sfSprite_setPosition(planes->sprite->sprite, (sfVector2f) {planes->x,
-                        //planes->y});
+    sfSprite_setPosition(planes->sprite->sprite, (sfVector2f) {planes->x,
+                        planes->y});
     sfRectangleShape_setPosition(planes->hitbox,
                                 (sfVector2f) {planes->x, planes->y});
     set_plane_rotation(planes);
@@ -57,7 +57,7 @@ plane_t *check_planes_delay(plane_t *origin, plane_t *planes, float seconds)
         return origin;
     origin = check_planes_delay(origin, planes->next, seconds);
     if (seconds >= planes->delay)
-        return destroy_plane(origin, planes, false);
+        return destroy_plane(origin, planes, true);
     return origin;
 }
 
@@ -69,9 +69,9 @@ bool fill_plane_data(plane_t *plane, char *str)
     plane->y = get_next_nbr(&str);
     plane->dest_x = get_next_nbr(&str);
     plane->dest_y = get_next_nbr(&str);
-    plane->sprite = NULL;//create_sprite(PLANE_PATH, plane->x, plane->y);
-    /*if (plane->sprite == NULL)
-        return true;*/
+    plane->sprite = create_sprite(PLANE_PATH, plane->x, plane->y);
+    if (plane->sprite == NULL)
+        return true;
     plane->hitbox = sfRectangleShape_create();
     plane->circle = sfCircleShape_create();
     sfRectangleShape_setFillColor(plane->hitbox, sfTransparent);

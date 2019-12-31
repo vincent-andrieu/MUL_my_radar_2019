@@ -34,10 +34,11 @@ static tower_t *add_tower(char *str, tower_t *towers)
     new->y = get_next_nbr(&str);
     new->radius = get_next_nbr(&str);
     new->circle = sfCircleShape_create();
-    new->sprite = NULL;/*create_sprite(TOWER_PATH, new->x, new->y);
+    new->sprite = create_sprite(TOWER_PATH, new->x + new->radius - 10,
+                                            new->y + new->radius - 10);
     if (new->sprite == NULL)
-        return NULL;*/
-    new->sprite_toggle = false;
+        return NULL;
+    new->sprite_toggle = true;
     sfCircleShape_setPosition(new->circle, (sfVector2f) {new->x, new->y});
     sfCircleShape_setOutlineColor(new->circle, sfBlack);
     sfCircleShape_setFillColor(new->circle, sfTransparent);
@@ -55,7 +56,7 @@ static plane_t *add_plane(char *str, plane_t *planes)
         return NULL;
     if (fill_plane_data(new, str))
         return NULL;
-    new->sprite_toggle = false;
+    new->sprite_toggle = true;
     new->next = planes;
     new->prev = NULL;
     if (new->next != NULL)

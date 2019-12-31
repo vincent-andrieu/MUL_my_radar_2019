@@ -14,7 +14,7 @@ static void destroy_towers(tower_t *towers)
         return;
     destroy_towers(towers->next);
     sfCircleShape_destroy(towers->circle);
-    //sfSprite_destroy(towers->sprite->sprite);
+    sfSprite_destroy(towers->sprite->sprite);
     free(towers);
 }
 

@@ -32,5 +32,5 @@ void set_plane_rotation(plane_t *plane)
     if (angle < 0)
         angle = -angle;
     sfRectangleShape_setRotation(plane->hitbox, angle);
-    //sfSprite_setRotation(plane->sprite->sprite, angle);
+    sfSprite_setRotation(plane->sprite->sprite, angle);
 }

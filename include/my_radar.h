@@ -16,16 +16,16 @@
 #define EXIT_INVALID_ARG_NBR 84
 #define MSG_SCRIPT_ERROR "Script error\n"
 #define EXIT_ERROR 84
+#define CLOCK_POS {WINDOW_WIDTH - 90, 15}
+#define FONT_PATH "resource/LemonMilk.otf"
 #define BACKGROUND_PATH "resource/background.png"
 #define TOWER_PATH "resource/tower.png"
 #define PLANE_PATH "resource/plane.png"
 #define CHAR_TOWER 'T'
+#define TOWER_OUTLINE_SIZE 2.0
 #define CHAR_PLANE 'P'
-#define CLOCK_POS {WINDOW_WIDTH - 90, 15}
-#define FONT_PATH "resource/LemonMilk.otf"
 #define PLANE_SIZE 20
 #define PLANE_RADIUS sqrt(PLANE_SIZE * PLANE_SIZE - 70)
-#define TOWER_OUTLINE_SIZE 2.0
 #define PLANE_OUTLINE_SIZE 2.0
 
 typedef struct sprite_s
