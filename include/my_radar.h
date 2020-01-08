@@ -5,6 +5,7 @@
 ** my_screensaver .h file
 */
 
+#include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
 #include "graph.h"
@@ -27,6 +28,7 @@
 #define PLANE_SIZE 20
 #define PLANE_RADIUS sqrt(PLANE_SIZE * PLANE_SIZE - 70)
 #define PLANE_OUTLINE_SIZE 2.0
+#define CRASH_FUEL_ANIM false
 
 typedef struct sprite_s
 {
@@ -48,16 +50,17 @@ typedef struct tower_s
 
 typedef struct plane_s
 {
+    bool toggle;
     sprite_t *sprite;
     bool sprite_toggle;
     sfRectangleShape *hitbox;
-    sfCircleShape *circle;
     float x;
     float y;
     float dest_x;
     float dest_y;
     float speed;
     float delay;
+    float fuel;
     struct plane_s *next;
     struct plane_s *prev;
 } plane_t;
@@ -80,14 +83,15 @@ void draw_towers(assets_t *assets, tower_t *towers);
 void draw_planes(sfRenderWindow *window, plane_t *planes);
 void draw_clock(sfRenderWindow *window, sfClock *clock, sfText *txt);
 void move_planes(plane_t *planes, int seconds);
-plane_t *check_planes_delay(plane_t *origin, plane_t *planes, float seconds);
+plane_t *check_planes_times(plane_t *planes, float seconds, assets_t *assets);
 void destroy_all(entities_t *entities, sfClock *clock,
                 sfText *txt, sfFont *font);
 float get_next_nbr(char **str);
 bool fill_plane_data(plane_t *planes, char *str);
-plane_t *destroy_plane(plane_t *origin, plane_t *plane, bool is_take_off);
-plane_t *check_collisions(plane_t *planes_origin, plane_t *planes, tower_t *towers);
-void set_plane_rotation(plane_t *plane);
-void take_off(plane_t *plane);
+plane_t *destroy_plane(plane_t *origin, plane_t *plane, bool is_take_off,
+                        assets_t *assets);
+plane_t *check_collisions(plane_t *planes_origin, plane_t *planes,
+                        tower_t *towers);
+void take_off(plane_t *plane, assets_t *assets);
 
 #endif

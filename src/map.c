@@ -5,8 +5,6 @@
 ** initialize the map
 */
 
-#include <stdlib.h>
-#include <stdbool.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "my.h"
@@ -56,7 +54,6 @@ static plane_t *add_plane(char *str, plane_t *planes)
         return NULL;
     if (fill_plane_data(new, str))
         return NULL;
-    new->sprite_toggle = true;
     new->next = planes;
     new->prev = NULL;
     if (new->next != NULL)

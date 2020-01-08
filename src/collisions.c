@@ -5,9 +5,13 @@
 ** check collision between them
 */
 
-#include <stdlib.h>
-#include <stdbool.h>
 #include "my_radar.h"
+
+static bool is_plane_collision(sfVector2f pos1, sfVector2f pos2)
+{
+    return (pos1.x >= pos2.x && pos1.x <= pos2.x + PLANE_SIZE)
+            && (pos1.y >= pos2.y && pos1.y <= pos2.y + PLANE_SIZE);
+}
 
 static bool is_circle_collision(sfVector2f pos1, sfVector2f pos2,
                                 float radius1, float radius2)
@@ -26,11 +30,10 @@ static plane_t *check_plane_collisions(plane_t *origin,
 {
     if (list == NULL || plane == NULL)
         return origin;
-    if (list != plane && is_circle_collision((sfVector2f) {list->x, list->y},
-                                        (sfVector2f) {plane->x, plane->y},
-                                        PLANE_RADIUS, PLANE_RADIUS)) {
-        origin = destroy_plane(origin, list, false);
-        origin = destroy_plane(origin, plane, false);
+    if (list != plane && is_plane_collision((sfVector2f) {list->x, list->y},
+                                        (sfVector2f) {plane->x, plane->y})) {
+        origin = destroy_plane(origin, list, false, NULL);
+        origin = destroy_plane(origin, plane, false, NULL);
         return origin;
     }
     return check_plane_collisions(origin, list->next, plane);
