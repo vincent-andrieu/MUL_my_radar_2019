@@ -50,8 +50,10 @@ void draw_planes(sfRenderWindow *window, plane_t *planes)
 {
     if (planes == NULL)
         return;
-    if (planes->sprite_toggle && planes->toggle)
-        sfRenderWindow_drawSprite(window, planes->sprite->sprite, NULL);
-    sfRenderWindow_drawRectangleShape(window, planes->hitbox, NULL);
+    if (planes->toggle) {
+        if (planes->sprite_toggle)
+            sfRenderWindow_drawSprite(window, planes->sprite->sprite, NULL);
+        sfRenderWindow_drawRectangleShape(window, planes->hitbox, NULL);
+    }
     draw_planes(window, planes->next);
 }
