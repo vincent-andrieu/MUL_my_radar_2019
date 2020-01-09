@@ -11,6 +11,7 @@ SRC	=	src/main.c	\
 		src/clock.c	\
 		src/map.c	\
 		src/draw.c	\
+		src/check_planes.c	\
 		src/planes_time.c	\
 		src/planes.c	\
 		src/destroy.c	\

@@ -13,7 +13,7 @@ static bool is_plane_collision(sfVector2f pos1, sfVector2f pos2)
             && (pos1.y >= pos2.y && pos1.y <= pos2.y + PLANE_SIZE);
 }
 
-static bool is_circle_collision(sfVector2f pos1, sfVector2f pos2,
+bool is_circle_collision(sfVector2f pos1, sfVector2f pos2,
                                 float radius1, float radius2)
 {
     pos1.x += radius1 / 2;

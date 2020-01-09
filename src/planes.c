@@ -9,47 +9,46 @@
 #include "my.h"
 #include "my_radar.h"
 
-static void check_out_from_map(plane_t *plane)
+static void move_planes_action(plane_t *planes, sfVector2f const speed)
 {
-    if (plane->x + PLANE_SIZE <= 0)
-        plane->x = WINDOW_WIDTH - 1;
-    else if (plane->x >= WINDOW_WIDTH)
-        plane->x = -PLANE_SIZE + 1;
-    if (plane->y + PLANE_SIZE <= 0)
-        plane->y = WINDOW_HEIGHT - 1;
-    else if (plane->y >= WINDOW_HEIGHT)
-        plane->y = -PLANE_SIZE + 1;
-}
-
-static void move_planes_action(plane_t *planes,
-                                float seconds, float last_seconds)
-{
-    float diff_x = planes->dest_x - planes->x;
-    float diff_y = planes->dest_y - planes->y;
-    float cosinus;
-
-    cosinus = diff_x != 0 ? cos(atan(diff_y / diff_x)) : 0;
-    planes->x += (seconds - last_seconds)
-                * (planes->speed * cosinus * (diff_x < 0 ? -1 : 1));
-    planes->y += (seconds - last_seconds)
-                * (planes->speed * (1 - cosinus) * (diff_y < 0 ? -1 : 1));
-    sfSprite_setPosition(planes->sprite->sprite, (sfVector2f) {planes->x,
-                        planes->y});
+    planes->x += speed.x;
+    planes->y += speed.y;
+    sfSprite_setPosition(planes->sprite->sprite,
+                        (sfVector2f) {planes->x, planes->y});
     sfRectangleShape_setPosition(planes->hitbox,
                                 (sfVector2f) {planes->x, planes->y});
 }
 
-void move_planes(plane_t *planes, float seconds)
+static sfVector2f get_plane_speed(plane_t *plane, float const speed_diff)
+{
+    sfVector2f const coord_diff = {plane->dest_x - plane->x,
+                                plane->dest_y - plane->y};
+    float const cosinus = coord_diff.x != 0
+                        ? cos(atan(coord_diff.y / coord_diff.x)) : 0;
+
+    return (sfVector2f const) {
+        speed_diff * (plane->speed * cosinus * (coord_diff.x < 0 ? -1 : 1)),
+        speed_diff * (plane->speed * (1 - cosinus) * (coord_diff.y < 0 ? -1 : 1))
+    };
+}
+
+plane_t *move_planes(plane_t *origin, plane_t *planes,
+                    float seconds, assets_t *assets)
 {
     static float last_seconds = 0;
+    sfVector2f const speed = planes != NULL && planes->toggle
+        ? get_plane_speed(planes, seconds - last_seconds) : (sfVector2f) {0, 0};
 
     if (planes == NULL)
-        return;
+        return origin;
     if (planes->toggle)
-        move_planes_action(planes, seconds, last_seconds);
+        move_planes_action(planes, speed);
     check_out_from_map(planes);
-    move_planes(planes->next, seconds);
+    if (planes->next != NULL)
+        origin = move_planes(origin, planes->next, seconds, assets);
+    origin = check_planes_at_dest(origin, planes, speed, assets);
     last_seconds = seconds;
+    return origin;
 }
 
 static void initialize_planes_data(plane_t *plane)

@@ -28,7 +28,8 @@
 #define PLANE_SIZE 20
 #define PLANE_RADIUS sqrt(PLANE_SIZE * PLANE_SIZE - 70)
 #define PLANE_OUTLINE_SIZE 2.0
-#define CRASH_FUEL_ANIM false
+#define PLANE_DEST_RADIUS 2.0
+#define LAND_ANIM true
 #define CRASH_SPEED_ANIM 0.1
 
 typedef struct sprite_s
@@ -83,7 +84,8 @@ void toggle_sprites(plane_t *planes, tower_t *towers);
 void draw_towers(assets_t *assets, tower_t *towers);
 void draw_planes(sfRenderWindow *window, plane_t *planes);
 void draw_clock(sfRenderWindow *window, sfClock *clock, sfText *txt);
-void move_planes(plane_t *planes, float seconds);
+plane_t *move_planes(plane_t *origin, plane_t *planes,
+                    float seconds, assets_t *assets);
 plane_t *check_planes_times(plane_t *planes, float seconds, assets_t *assets);
 void destroy_all(entities_t *entities, sfClock *clock,
                 sfText *txt, sfFont *font);
@@ -93,6 +95,11 @@ plane_t *destroy_plane(plane_t *origin, plane_t *plane, bool is_take_off,
                         assets_t *assets);
 plane_t *check_collisions(plane_t *planes_origin, plane_t *planes,
                         tower_t *towers);
+bool is_circle_collision(sfVector2f pos1, sfVector2f pos2,
+                                float radius1, float radius2);
 void take_off(plane_t *plane, assets_t *assets);
+void check_out_from_map(plane_t *plane);
+plane_t *check_planes_at_dest(plane_t *origin, plane_t *planes,
+                            sfVector2f const speed, assets_t *assets);
 
 #endif
