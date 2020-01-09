@@ -15,8 +15,7 @@ SRC	=	src/main.c	\
 		src/planes_time.c	\
 		src/planes.c	\
 		src/destroy.c	\
-		src/collisions.c	\
-		src/rotations.c
+		src/collisions.c
 
 OBJ	=	$(SRC:.c=.o)
 

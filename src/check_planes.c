@@ -22,11 +22,11 @@ void check_out_from_map(plane_t *plane)
 }
 
 plane_t *check_planes_at_dest(plane_t *origin, plane_t *planes,
-                            sfVector2f const speed, assets_t *assets)
+                            sfVector2f const speed)
 {
     if (is_circle_collision(
     (sfVector2f) {planes->x + speed.x, planes->y + speed.y}, (sfVector2f)
     {planes->dest_x, planes->dest_y}, PLANE_RADIUS, PLANE_DEST_RADIUS))
-        return destroy_plane(origin, planes, LAND_ANIM, assets);
+        return destroy_plane(origin, planes);
     return origin;
 }

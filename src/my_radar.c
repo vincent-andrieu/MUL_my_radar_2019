@@ -44,10 +44,9 @@ static int game(assets_t *assets, entities_t *entities,
         return EXIT_ERROR;
     while (!does_kill_prog(assets, entities)) {
         seconds = sfTime_asSeconds(sfClock_getElapsedTime(clock));
-        entities->planes = check_planes_times(entities->planes, seconds,
-                                            assets);
+        entities->planes = check_planes_times(entities->planes, seconds);
         entities->planes = move_planes(entities->planes, entities->planes,
-                                        seconds, assets);
+                                        seconds);
         entities->planes = check_collisions(entities->planes, entities->planes,
                                             entities->towers);
         if (entities->planes ==  NULL)

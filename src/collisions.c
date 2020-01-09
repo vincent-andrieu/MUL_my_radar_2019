@@ -34,8 +34,8 @@ static plane_t *check_plane_collisions(plane_t *origin,
         return origin;
     if (list != plane && is_plane_collision((sfVector2f) {list->x, list->y},
                                         (sfVector2f) {plane->x, plane->y})) {
-        origin = destroy_plane(origin, list, false, NULL);
-        origin = destroy_plane(origin, plane, false, NULL);
+        origin = destroy_plane(origin, list);
+        origin = destroy_plane(origin, plane);
         return origin;
     }
     return check_plane_collisions(origin, list->next, plane);

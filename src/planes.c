@@ -33,7 +33,7 @@ static sfVector2f get_plane_speed(plane_t *plane, float const speed_diff)
 }
 
 plane_t *move_planes(plane_t *origin, plane_t *planes,
-                    float seconds, assets_t *assets)
+                    float seconds)
 {
     static float last_seconds = 0;
     sfVector2f const speed = planes != NULL && planes->toggle
@@ -45,8 +45,8 @@ plane_t *move_planes(plane_t *origin, plane_t *planes,
         move_planes_action(planes, speed);
     check_out_from_map(planes);
     if (planes->next != NULL)
-        origin = move_planes(origin, planes->next, seconds, assets);
-    origin = check_planes_at_dest(origin, planes, speed, assets);
+        origin = move_planes(origin, planes->next, seconds);
+    origin = check_planes_at_dest(origin, planes, speed);
     last_seconds = seconds;
     return origin;
 }
