@@ -38,7 +38,7 @@ static int game(assets_t *assets, entities_t *entities,
                 sfClock *clock, sfText *txt)
 {
     sprite_t *map = create_sprite(BACKGROUND_PATH, 0, 0);
-    int seconds;
+    float seconds;
 
     if (map == NULL)
         return EXIT_ERROR;
@@ -46,7 +46,7 @@ static int game(assets_t *assets, entities_t *entities,
         seconds = sfTime_asSeconds(sfClock_getElapsedTime(clock));
         entities->planes = check_planes_times(entities->planes, seconds,
                                             assets);
-        move_planes(entities->planes, (int) seconds);
+        move_planes(entities->planes, seconds);
         entities->planes = check_collisions(entities->planes, entities->planes,
                                             entities->towers);
         if (entities->planes ==  NULL)

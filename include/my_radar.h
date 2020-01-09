@@ -83,7 +83,7 @@ void toggle_sprites(plane_t *planes, tower_t *towers);
 void draw_towers(assets_t *assets, tower_t *towers);
 void draw_planes(sfRenderWindow *window, plane_t *planes);
 void draw_clock(sfRenderWindow *window, sfClock *clock, sfText *txt);
-void move_planes(plane_t *planes, int seconds);
+void move_planes(plane_t *planes, float seconds);
 plane_t *check_planes_times(plane_t *planes, float seconds, assets_t *assets);
 void destroy_all(entities_t *entities, sfClock *clock,
                 sfText *txt, sfFont *font);

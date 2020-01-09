@@ -9,46 +9,45 @@
 #include "my.h"
 #include "my_radar.h"
 
-plane_t *destroy_plane(plane_t *origin, plane_t *plane, bool is_take_off,
-                        assets_t *assets)
+static void check_out_from_map(plane_t *plane)
 {
-    if (plane->prev != NULL)
-        plane->prev->next = plane->next;
-    if (plane->next != NULL)
-        plane->next->prev = plane->prev;
-    if (plane->prev == NULL)
-        origin = plane->next;
-    if (is_take_off)
-        take_off(plane, assets);
-    sfSprite_destroy(plane->sprite->sprite);
-    sfRectangleShape_destroy(plane->hitbox);
-    free(plane);
-    return origin;
+    if (plane->x + PLANE_SIZE <= 0)
+        plane->x = WINDOW_WIDTH - 1;
+    else if (plane->x >= WINDOW_WIDTH)
+        plane->x = -PLANE_SIZE + 1;
+    if (plane->y + PLANE_SIZE <= 0)
+        plane->y = WINDOW_HEIGHT - 1;
+    else if (plane->y >= WINDOW_HEIGHT)
+        plane->y = -PLANE_SIZE + 1;
 }
 
-static void move_planes_action(plane_t *planes)
+static void move_planes_action(plane_t *planes,
+                                float seconds, float last_seconds)
 {
     float diff_x = planes->dest_x - planes->x;
     float diff_y = planes->dest_y - planes->y;
     float cosinus;
 
     cosinus = diff_x != 0 ? cos(atan(diff_y / diff_x)) : 0;
-    planes->x += planes->speed * cosinus * (diff_x < 0 ? -1 : 1);
-    planes->y += planes->speed * (1 - cosinus) * (diff_y < 0 ? -1 : 1);
+    planes->x += (seconds - last_seconds)
+                * (planes->speed * cosinus * (diff_x < 0 ? -1 : 1));
+    planes->y += (seconds - last_seconds)
+                * (planes->speed * (1 - cosinus) * (diff_y < 0 ? -1 : 1));
     sfSprite_setPosition(planes->sprite->sprite, (sfVector2f) {planes->x,
                         planes->y});
     sfRectangleShape_setPosition(planes->hitbox,
                                 (sfVector2f) {planes->x, planes->y});
 }
 
-void move_planes(plane_t *planes, int seconds)
+void move_planes(plane_t *planes, float seconds)
 {
-    static int last_seconds = -1;
+    static float last_seconds = 0;
 
-    if (planes == NULL || seconds <= last_seconds)
+    if (planes == NULL)
         return;
     if (planes->toggle)
-        move_planes_action(planes);
+        move_planes_action(planes, seconds, last_seconds);
+    check_out_from_map(planes);
     move_planes(planes->next, seconds);
     last_seconds = seconds;
 }
