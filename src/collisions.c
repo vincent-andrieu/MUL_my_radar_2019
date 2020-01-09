@@ -9,8 +9,10 @@
 
 static bool is_plane_collision(sfVector2f pos1, sfVector2f pos2)
 {
-    return (pos1.x >= pos2.x && pos1.x <= pos2.x + PLANE_SIZE)
-            && (pos1.y >= pos2.y && pos1.y <= pos2.y + PLANE_SIZE);
+    return (pos1.y >= pos2.y && pos1.y <= pos2.y + PLANE_SIZE)
+            && ((pos1.x >= pos2.x && pos1.x <= pos2.x + PLANE_SIZE)
+                || (pos1.x + PLANE_SIZE >= pos2.x
+                    && pos1.x + PLANE_SIZE <= pos2.x + PLANE_SIZE));
 }
 
 bool is_circle_collision(sfVector2f pos1, sfVector2f pos2,
