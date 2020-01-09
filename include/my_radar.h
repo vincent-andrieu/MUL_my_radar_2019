@@ -29,6 +29,7 @@
 #define PLANE_RADIUS sqrt(PLANE_SIZE * PLANE_SIZE - 70)
 #define PLANE_OUTLINE_SIZE 2.0
 #define CRASH_FUEL_ANIM false
+#define CRASH_SPEED_ANIM 0.1
 
 typedef struct sprite_s
 {
