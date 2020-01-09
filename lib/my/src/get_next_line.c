@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include "my.h"
 
+static char *read_file(int fd, char **too_much, int *size);
+
 static char *check_line(int fd, char *buffer, char **too_much, int *size)
 {
     int i = my_strlen(*too_much);
