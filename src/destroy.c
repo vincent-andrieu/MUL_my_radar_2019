@@ -11,6 +11,8 @@
 plane_t *destroy_plane(plane_t *origin, plane_t *plane, bool is_take_off,
                         assets_t *assets)
 {
+    if (!plane->toggle)
+        return origin;
     if (plane->prev != NULL)
         plane->prev->next = plane->next;
     if (plane->next != NULL)
