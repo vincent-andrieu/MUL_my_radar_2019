@@ -1,0 +1,14 @@
+The type must be separated by one character
+others must be separated by minimal one non digit character
+
+TOWERS :    T x y radius
+    x y     Coordinates x y
+    radius  Towers radius
+
+PLANES :    P speed delay fuel x y dest_x dest_y
+
+    speed           Planes speed (pixels/second)
+    delay           Time before spawning planes (in seconds)
+    fuel            Time before plane crash after spawning (in seconds)
+    x y             Coordinates x y where the plane spawn
+    dest_x dest_y   Coordinates x y of the destination
