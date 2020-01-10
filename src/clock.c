@@ -35,8 +35,8 @@ static char *my_float_get_str(float nbr)
 
 void draw_clock(sfRenderWindow *window, sfClock *clock, sfText *txt)
 {
-    char *clock_str = my_float_get_str(sfTime_asSeconds(
-                sfClock_getElapsedTime(clock)));
+    char *clock_str = my_float_get_str(
+                (float) sfClock_getElapsedTime(clock).microseconds / 1000000);
 
     sfText_setString(txt, clock_str);
     free(clock_str);
