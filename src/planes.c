@@ -21,14 +21,14 @@ static void move_planes_action(plane_t *planes, sfVector2f const speed)
 
 static sfVector2f get_plane_speed(plane_t *plane, float const speed_diff)
 {
-    sfVector2f const coord_diff = {plane->dest_x - plane->x,
+    sfVector2f const coo_diff = {plane->dest_x - plane->x,
                                 plane->dest_y - plane->y};
-    float const cosinus = coord_diff.x != 0
-                        ? cos(atan(coord_diff.y / coord_diff.x)) : 0;
+    float const cosinus = coo_diff.x != 0
+                        ? cos(atan(coo_diff.y / coo_diff.x)) : 0;
 
     return (sfVector2f const) {
-        speed_diff * (plane->speed * cosinus * (coord_diff.x < 0 ? -1 : 1)),
-        speed_diff * (plane->speed * (1 - cosinus) * (coord_diff.y < 0 ? -1 : 1))
+        speed_diff * (plane->speed * cosinus * (coo_diff.x < 0 ? -1 : 1)),
+        speed_diff * (plane->speed * (1 - cosinus) * (coo_diff.y < 0 ? -1 : 1))
     };
 }
 
