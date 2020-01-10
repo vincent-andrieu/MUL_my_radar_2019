@@ -24,6 +24,7 @@
 #define PLANE_PATH "resource/plane.png"
 #define CHAR_TOWER 'T'
 #define TOWER_OUTLINE_SIZE 2.0
+#define TOWER_SIZE 50
 #define CHAR_PLANE 'P'
 #define PLANE_SIZE 20
 #define PLANE_RADIUS sqrt(PLANE_SIZE * PLANE_SIZE - 70)

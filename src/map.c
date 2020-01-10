@@ -32,8 +32,8 @@ static tower_t *add_tower(char *str, tower_t *towers)
     new->y = get_next_nbr(&str);
     new->radius = get_next_nbr(&str);
     new->circle = sfCircleShape_create();
-    new->sprite = create_sprite(TOWER_PATH, new->x + new->radius - 10,
-                                            new->y + new->radius - 10);
+    new->sprite = create_sprite(TOWER_PATH, new->x + new->radius
+        - TOWER_SIZE / 2, new->y + new->radius - TOWER_SIZE / 2);
     if (new->sprite == NULL)
         return NULL;
     new->sprite_toggle = true;
