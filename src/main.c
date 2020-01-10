@@ -65,7 +65,8 @@ static int prepare_window(char *map_path, sfVideoMode mde, assets_t *assets)
         return EXIT_ERROR;
     sfSprite_setTexture(assets->sprite, assets->texture, sfTrue);
     sfRenderWindow_setFramerateLimit(assets->window, 30);
-    exit_value = show_window(assets, map_path);
+    if (sfRenderWindow_isOpen(assets->window))
+        exit_value = show_window(assets, map_path);
     framebuffer_destroy(assets->framebuffer);
     sfSprite_destroy(assets->sprite);
     sfTexture_destroy(assets->texture);
