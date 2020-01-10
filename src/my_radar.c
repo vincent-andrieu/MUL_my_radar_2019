@@ -43,7 +43,7 @@ static int game(assets_t *assets, entities_t *entities,
     if (map == NULL)
         return EXIT_ERROR;
     while (!does_kill_prog(assets, entities)) {
-        seconds = sfTime_asSeconds(sfClock_getElapsedTime(clock));
+        seconds = (float) sfClock_getElapsedTime(clock).microseconds / 1000000;
         entities->planes = check_planes_times(entities->planes, seconds);
         entities->planes = move_planes(entities->planes, entities->planes,
                                         seconds);
